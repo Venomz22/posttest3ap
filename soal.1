@@ -1,0 +1,121 @@
+import datetime
+
+list_menu = [
+  {"no": '1', "name": "Nasi Goreng", "harga": 12000, "tipe": "makanan"},
+  {"no": '2', "name": "Mie Goreng", "harga": 12000, "tipe": "makanan"},
+  {"no": '3', "name": "Mawut", "harga": 12000, "tipe": "makanan"},
+  {"no": '4', "name": "Mie Kuah", "harga": 12000, "tipe": "makanan"},
+  {"no": '5', "name": "Ayam Goreng", "harga": 15000, "tipe": "makanan"},
+  {"no": '6', "name": "Teh es/panas/Hangat", "harga": 3000, "tipe": "minuman"},
+  {"no": '7', "name": "Es Jeruk/panas/Hangat", "harga": 6000, "tipe": "minuman"},
+  {"no": '8', "name": "Es Susu", "harga": 5000, "tipe": "minuman"},
+  {"no": '9', "name": "Es Sirop", "harga": 4000, "tipe": "minuman"},
+  {"no": '10',"name": "Kopi Hitam", "harga": 7000, "tipe": "minuman"},
+]
+
+
+def daftar_diskon():
+  print("""
+        Semua Diskon Disini
+
+      1. Mendapat Diskon setiap Pembelian 3 Minuman sebesar 10%
+      2. Mendapat Diskon setiap Pembelian 2 Makanan sebesar 5%
+      3. Mendapat Diskon setiap pembayaran melalui E-money sebesar 5%
+      4. Mendapat Diskon saat weekend sebesar 5%
+      5. Mendapat Diskon saat weekdays sebesar 10%
+  """)
+
+
+
+
+def daftar_menu():
+  print("""
+Daftar Semua Menu Disini
+  """)
+  for menu in list_menu:
+    harga = menu['harga']
+    print(f"({menu['no']}) {menu['name']} |{harga}|")
+
+
+
+
+daftar_diskon()
+daftar_menu()
+
+beli = True
+sudah_dipesan = []
+while beli:
+  daftar_barang = input('Pesanan Anda :  ')
+
+
+  barang = next((sub for sub in list_menu if sub['no'] == daftar_barang), None)
+
+  if barang == None:
+    print('tidak ada')
+  else:
+    total_pesanan = input(f"{barang['name']}, Mau Pesan berapa :  ")
+    barang['total'] = int(total_pesanan)
+    barang['bayar'] = barang['total'] * barang['harga']
+    sudah_dipesan.append(barang)
+    print(f"{barang['name']} {barang['total']} Silahkan Ditunggu ya! ")
+  beli = input("""
+
+  Apakah ada lagi yang ingin dipesan ? 
+  ---------------------------
+  Jika Ada Ketik (y)
+  Jika Tidak ada Ketik (n)
+  ---------------------------
+  
+  """) == 'y'
+
+
+if len(sudah_dipesan) == 0:
+  print("tidak ada pesanan")
+else:
+  
+
+  total_makanan = 0
+  total_minuman = 0
+  for dipesan in sudah_dipesan:
+    if dipesan['tipe'] == 'makanan':
+      total_makanan += dipesan['total']
+    else:
+      total_minuman += dipesan['total']
+
+
+  
+  print("""
+
+==================
+| Daftar Pesanan |
+==================
+
+  """)
+  for dipesan in sudah_dipesan:
+    price = dipesan['harga']
+    print(f"[{dipesan['no']}] {dipesan['name']} x {dipesan['total']} = {dipesan['bayar']}")
+  
+  print("\n=================")
+  
+  emoney = input("""
+  Apa anda ingin membayar dengan E-money? 
+  Jika Iya Ketik (y)
+  Jika Tidak Ketik (n)
+  """)
+  diskon = 5 if emoney == "y" else 0
+
+
+  diskon_hari = 10 if datetime.datetime.today().weekday() < 5 else 5
+
+
+  diskon_makanan = 10 if total_makanan >= 3 else 0
+  diskon_minuman = 5 if total_minuman >= 2 else 0
+
+  total_diskon = diskon + diskon_hari + diskon_makanan + diskon_minuman
+  total_pembayaran = sum(dipesan['bayar'] for dipesan in sudah_dipesan)
+  potongan = total_pembayaran * total_diskon / 100
+  pembayaran = total_pembayaran - potongan
+
+  print(f"Total Pesanan anda adalah : {total_pembayaran}")
+  print(f"Diskon pesanan anda {total_diskon}% senilai {potongan}")
+  print(f"Total pembayaran anda adalah: {pembayaran}")
