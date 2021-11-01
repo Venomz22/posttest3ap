@@ -1,0 +1,51 @@
+print("""
+
+Selamat Datang di
+
+╔══════════════╗
+|  DimasA.com  |
+╚══════════════╝
+
+=================
+| 1. Buat akun  |
+| 2. Login      |
+| 3. Keluar     |
+=================
+
+      """)
+
+userid = "user"
+passid = "user"
+newid = []
+menu = int(input("Silahkan pilih salah satu :  "))
+i = 3
+
+while i>=1: 
+    if menu == 1 :
+        userid= input("Masukkan Username Baru :  ")
+        passid= input("Masukkan Password Baru :  ")
+        newid = [userid, passid]
+        print("Username dan Password telah di Update")
+
+        menu = int(input("Silahkan pilih salah satu : "))
+
+    elif menu == 2 :
+        user = input("Username :")
+        passw = input("Password :")
+
+        if user == userid or user == (newid[0]):
+         if passw == passid or passw == (newid[1]):
+
+                print ("Anda Telah Login")
+                print ("selamat datang kembali")
+                menu = int(input("Silahkan pilih salah satu : "))
+                
+         
+        else :
+            i-=1
+            print("Username atau Password Anda salah, Sisa :", i )
+   
+    else :
+        menu == 3
+        print("Selamat Tinggal!!")
+        break
